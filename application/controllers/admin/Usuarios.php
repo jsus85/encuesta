@@ -18,9 +18,19 @@ class Usuarios extends CI_Controller {
 	 * map to /index.php/welcome/<method_name>
 	 * @see https://codeigniter.com/user_guide/general/urls.html
 	 */
+
+	public function __construct()
+    {
+                parent::__construct();
+                // Your own constructor code
+			    $this->load->model('Usuarios_model');	  
+			               
+    }
+
 	public function index()
 	{
 		$data['title'] = 'Mantenimiento Usuarios';
+		$data['list'] =  $this->Usuarios_model->all();  			
 		$this->load->view('admin/usuarios',$data);
 	}
 
@@ -30,6 +40,61 @@ class Usuarios extends CI_Controller {
 	public function panel(){
 		$data['title'] = 'Panel de Administracion';
 		$this->load->view('admin/panel',$data);	
+	}
+
+	public function add()
+	{
+
+		//datos enviados por post 
+		if ($this->input->server('REQUEST_METHOD') === 'POST')
+		{
+			
+			$this->form_validation->set_rules('usuario', 'Usuario', 'trim|required');
+			$this->form_validation->set_rules('clave', 'clave', 'trim|required');
+
+					if($this->form_validation->run() == FALSE)
+					{					
+						$data['message_error'] = TRUE;
+					
+					}else{
+
+							$data = array(
+										'user'   => $this->input->post('usuario'),
+										'clave'  => $this->input->post('clave'),
+										'fecha'		=> 'now()'
+							);
+
+							//si inserta correctamente  retorna true
+			                if($this->Usuarios_model->save($data)){
+									 redirect('admin/usuarios', 'refresh');
+			                }else{
+
+			                    $data['message_error'] = FALSE; 
+			                }
+
+
+					}
+		
+		}
+
+
+
+		$data['title'] = 'Nuevo Usuario';
+		$this->load->view('admin/usuarios_nuevo',$data);
+	}// nuevo
+
+
+	function edit(){
+		  
+		   $id = $this->uri->segment(4);
+		   
+		    //usuarios data 
+	        $data['usuarios'] = $this->Usuarios_model->get_data_by_id($id);
+	        $data['title'] = 'Editar Usuario';
+	        $this->load->view('admin/usuarios_editar',$data); 
+
+
+
 	}
 
 }

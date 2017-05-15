@@ -27,36 +27,53 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 	<div class="container">
 	    
-
       <div class="row">
-	 		  <a href="<?php echo base_url('admin/usuarios/add');?>" class="btn btn-raised btn-primary"><i class="glyphicon glyphicon-pencil"></i> Nuevo</a>  
-        <table class="table table-striped table-hover ">
-        <thead>
-        <tr>
-          <th>#</th>
-          <th>Usuario</th>
-          <th>Clave</th>
-          <th></th>
-        </tr>
-        </thead>
-        <tbody>
-        <?php 
-        $i = 1;
-                foreach ($list as $value) {
-            ?>
+	 		     
 
-        <tr>
-          <td><?php echo $i;?></td>
-          <td><a href="<?php echo site_url().'admin/usuarios/edit/'.$value->id;?>"><i class="glyphicon glyphicon-pencil"></i> <?php echo $value->user;?></a></td>
-          <td><?php echo $value->clave;?></td>
-          <td><a title="Eliminar Empleado" ><i class="glyphicon glyphicon-trash"></i></a></td>
-        </tr>
-        <?php  $i++;  }?>
-        </tbody>
-      </table>
-      
+      <div class="panel panel-default">
+          <div class="panel-heading">Nuevo</div>
+            <div class="panel-body">
+              
+              <form  method="post" action="<?php echo base_url('admin/usuarios/add');?>">
 
-        
+
+                <div class="form-group">
+                  <label for="inputUsuario" class="col-md-2 control-label">Usuario</label>
+                  <div class="col-md-10">
+                    <input type="text" class="form-control" id="usuario" name="usuario" placeholder="Ingrese el usuario" />
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="inputClave" class="col-md-2 control-label">Clave</label>
+                  <div class="col-md-10">
+                    <input type="password" class="form-control" id="clave" name="clave" placeholder="Ingrese la clave" />
+                  </div>
+                </div>
+
+                <?php 
+                            if (validation_errors()): 
+                            echo '<div class="alert alert-dismissible alert-danger">';
+                            echo '<a class="close" data-dismiss="alert">×</a>';
+                            ?>
+
+                            <?php echo validation_errors(); ?>
+
+                            <?php 
+                            echo '</div>';
+                            endif; 
+                ?>
+
+                <a href="<?php echo base_url('admin/usuarios');?>" class="btn btn-raised btn-primary">Cancelar</a>
+                <button type="submit" class="btn btn-raised btn-success">Grabar</button>
+
+             </form>   
+
+
+
+
+            </div>
+      </div>
 
       </div>
 
