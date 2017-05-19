@@ -18,8 +18,28 @@ class Welcome extends CI_Controller {
 	 * map to /index.php/welcome/<method_name>
 	 * @see https://codeigniter.com/user_guide/general/urls.html
 	 */
+
+	public function __construct()
+    {
+                parent::__construct();
+                // Your own constructor code
+			    $this->load->model('Encuestas_model');	  
+			               
+    }
+
 	public function index()
 	{
-		$this->load->view('welcome_message');
+		$data['preguntas'] =  $this->Encuestas_model->all();  	
+		$this->load->view('welcome_message',$data);
 	}
+
+	public function save(){
+		
+		for ($i=1; $i <=$this->input->post('idx') ; $i++) { 
+			# code...
+			echo $this->input->post('opciones'.$i)."<br>";
+		}
+	}
+
+
 }
